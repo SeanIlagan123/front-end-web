@@ -10,7 +10,7 @@ function Nav() {
                 <Link to = '/gradepointaverage'><li>GPA</li></Link>
                 <Link to = '/downloads'><li>Downloads</li></Link>
                 <Link to = '/about'><li>About</li></Link>
-                <Link to = '/profile'><li>Profile</li></Link>
+                <Link to = '/login'><li>Login</li></Link>
             </ul>
         </nav>
     );
