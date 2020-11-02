@@ -8,7 +8,7 @@ import Downloads from './components/Downloads';
 import SignUp from './components/SignUp';
 
 //Importing standard libraries.
-import React, {useState} from 'react';
+import React from 'react';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 function App() {
