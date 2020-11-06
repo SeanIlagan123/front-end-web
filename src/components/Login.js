@@ -1,57 +1,54 @@
 import React from 'react';
-import {Link} from 'react-router-dom'
+import {Link} from 'react-router-dom';
+import axios from 'axios';
 // https://serverless-stack.com/chapters/create-a-login-page.html
 
 class Login extends React.Component {
-    constructor(props) {
+     constructor(props) {
       super(props);
       this.state = {
-        items: [],
-        /* username: "",
-        password: "", */
-        isLoaded: false
+        username: "",
+        password: "",
+        stateOn: "Offline",
+        errors: {}
       }
+    } 
+
+    handleSubmit = e => {
+      e.preventDefault();
+      const userData = {
+        username: this.username,
+        password: this.password,
+      };
+
+      axios.post('/users/login', userData)
+        .then(res => {
+          console.log(res)
+          this.setState({stateOn: 'Online'})
+        })
+          .catch(err => {
+            this.setState({stateOn: 'Incorrect'})
+          })
     }
 
-    componentDidMount() {
-      fetch('http://localhost:5000/users')
-      .then(res => res.json())
-      .then(result => {
-          this.setState({
-            isLoaded: true,
-            items: result,
-          });
-        }
-      )
-      .then((data) => console.log('This is your data', data))
-      
-    }
-
-    handleChange(e) {
-      this.setState({value: e.target.value});
-    }
 
     render() {
-        const { isLoaded, items } = this.state;
         return(
-            <div>
-                <ul>
-          {items.map(item => (
-            <li>
-              {item.username}
-            </li>
-          ))}
-        </ul>
-                {/* /* <h1>Login</h1>
-                <h1>Status: {this.props.loggedInStatus}</h1>
-                <form>
+          <div>
+                <h1>Login</h1>
+                <h1>Status: {this.state.stateOn}</h1>
+                <form onSubmit = {this.handleSubmit}>
                     <label>Username</label><br></br>
-                    <input type ="text" name ="username" placeholder = "username"></input><br></br>
+                    <input type ="text" name ="username" placeholder = "username" 
+                      onChange={e => this.username = e.target.value}>
+                    </input><br></br>
                     <label>Password</label><br></br>
-                    <input type ="text" name ="password" placeholder = "password"></input><br></br>
-                    <input type="submit" value="Submit" onClick={event => this.handleSubmit(event)}></input>
+                    <input type ="password" name ="password" placeholder = "password" 
+                      onChange={e => this.password = e.target.value}>
+                    </input><br></br>
+                    <input type="submit" value="Submit"></input>
                 </form>
-                <Link to = '/signup'><p>SignUp</p></Link> */}
+                <Link to = '/signup'><p>SignUp</p></Link>
             </div>
         );
     }
