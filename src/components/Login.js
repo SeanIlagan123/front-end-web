@@ -16,7 +16,7 @@ class Login extends React.Component {
       password: "",
     };
   }
-
+  // Will need to add the method that refreshes the accessToken.
   handleSubmit = (e) => {
     e.preventDefault();
     const userData = {
