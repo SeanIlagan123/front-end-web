@@ -14,17 +14,7 @@ class Login extends React.Component {
     this.state = {
       username: "",
       password: "",
-      login: false,
-      store: null,
     };
-  }
-
-  componentDidMount() {
-    // saves state and allows refresh of page
-    let store = JSON.parse(localStorage.getItem("login"));
-    if (store && store.login) {
-      this.setState({ login: true, username: store.username, store: store });
-    }
   }
 
   handleSubmit = (e) => {
@@ -44,14 +34,6 @@ class Login extends React.Component {
         console.log(err);
         this.setState({ status: "Incorrect" });
       });
-  };
-
-  logout = (e) => {
-    e.preventDefault();
-    axios.get("/api/user/logout", { withCredentials: true }).then((res) => {
-      console.log(res);
-    });
-    this.setState({ login: false });
   };
 
   render() {
