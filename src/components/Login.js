@@ -1,7 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
-import Cookies from "js-cookie";
+import Home from "./Home";
+import { Link, withRouter } from "react-router-dom";
 
 // https://www.youtube.com/watch?v=I3PC8pV1SBM
 // https://www.youtube.com/watch?v=G41O8H0eioM
@@ -16,7 +16,7 @@ class Login extends React.Component {
       password: "",
     };
   }
-  // Will need to add the method that refreshes the accessToken.
+
   handleSubmit = (e) => {
     e.preventDefault();
     const userData = {
@@ -25,16 +25,16 @@ class Login extends React.Component {
     };
     axios
       .post("/api/user/login", userData, { withCredentials: true })
-      .then((res) => {
-        this.setState({ login: true });
-        this.setState({ username: this.username });
-        window.location.replace("/");
+      .then(() => {
+        this.props.userLogin();
+        this.props.history.push('/');
       })
       .catch((err) => {
         console.log(err);
         this.setState({ status: "Incorrect" });
       });
   };
+
 
   render() {
     return (
@@ -70,4 +70,4 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+export default withRouter(Login);

@@ -1,17 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
-
 class Nav extends React.Component {
-  logout = (e) => {
-    e.preventDefault();
-    axios.get("/api/user/logout", { withCredentials: true }).then((res) => {
-      console.log(res);
-    });
-    this.setState({ login: false });
-    window.location.replace("/");
-  };
-
   render() {
     return (
       <div>
@@ -53,7 +42,7 @@ class Nav extends React.Component {
                 <Link to="/about">
                   <li>About</li>
                 </Link>
-                <Link to="/" onClick={this.logout}>
+                <Link to="/" onClick={this.props.userLogout}>
                   <li>Logout</li>
                 </Link>
               </ul>

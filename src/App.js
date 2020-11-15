@@ -17,7 +17,6 @@ class App extends React.Component {
     super(props);
     this.state = {
       login: false,
-      store: null,
     };
   }
 
@@ -29,21 +28,47 @@ class App extends React.Component {
     axios
       .post("/api/user/status", { withCredentials: true })
       .then((res) => {
-        console.log(res.data);
         console.log("User is logged in");
+        this.setState({ login: true });
+      })
+      .catch(() => {
+        this.handleRefresh();
+      });
+  }
+
+  handleRefresh() {
+    axios
+      .post("/api/user/refresh", { withCredentials: true })
+      .then((res) => {
+        console.log("Access Token Changed");
         this.setState({ login: true });
       })
       .catch((err) => {
         console.log(err);
-        this.setState({ status: "Incorrect" });
+        this.setState({ login: false });
       });
   }
+
+  // The logout method works. But it stops working after the accessToken expires.
+  // Although the accessToken updates on expire. It only updates properly
+  // When the website is refreshed.
+  userLogout = (e) => {
+    e.preventDefault();
+    axios.get("/api/user/logout", { withCredentials: true }).then((res) => {
+      console.log(res);
+      this.setState({ login: false });
+    });
+  };
+
+  userLogin = (e) => {
+    this.setState({ login: true });
+  };
 
   render() {
     return (
       <div>
         <Router>
-          <Nav login={this.state.login} />
+          <Nav login={this.state.login} userLogout={this.userLogout} />
           <Switch>
             <Route
               path="/"
@@ -53,7 +78,10 @@ class App extends React.Component {
             <Route path="/about" component={About} />
             <Route path="/downloads" component={Downloads} />
             <Route path="/gradepointaverage" component={GradePoint} />
-            <Route path="/login" component={Login} />
+            <Route
+              path="/login"
+              component={() => <Login userLogin={this.userLogin} />}
+            />
             <Route path="/signup" component={SignUp} />
           </Switch>
         </Router>

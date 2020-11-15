@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import { withRouter } from "react-router-dom";
 
 class SignUp extends React.Component {
   handleSubmit = (e) => {
@@ -12,6 +13,7 @@ class SignUp extends React.Component {
     axios
       .post("http://localhost:5000/api/user/register", data)
       .then((res) => {
+        this.props.history.push('/login');
         console.log(res);
       })
       .catch((err) => {
@@ -58,4 +60,4 @@ class SignUp extends React.Component {
   }
 }
 
-export default SignUp;
+export default withRouter(SignUp);
