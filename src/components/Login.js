@@ -1,6 +1,5 @@
 import React from "react";
 import axios from "axios";
-import Home from "./Home";
 import { Link, withRouter } from "react-router-dom";
 
 // https://www.youtube.com/watch?v=I3PC8pV1SBM
@@ -26,15 +25,14 @@ class Login extends React.Component {
     axios
       .post("/api/user/login", userData, { withCredentials: true })
       .then(() => {
-        this.props.userLogin();
-        this.props.history.push('/');
+        this.props.userLogin(); // change parent login state to true.
+        this.props.history.push("/"); // redirect user back to home page
       })
       .catch((err) => {
         console.log(err);
         this.setState({ status: "Incorrect" });
       });
   };
-
 
   render() {
     return (
