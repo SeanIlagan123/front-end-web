@@ -11,14 +11,13 @@ import SignUp from "./components/SignUp";
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import axios from "axios";
-import Cookies from "js-cookie";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       login: false,
-      refreshTimer: 0, // set a dummy refresh time state
+      refreshTimer: 5000, // set a dummy refresh time state
     };
   }
 
@@ -26,7 +25,9 @@ class App extends React.Component {
   // Also, check the current status of a user.
   componentDidMount() {
     this.updateTimer();
-    this.handleCheckStatus();
+    if (window.sessionStorage.getItem("online") === "true") { // runs only if a user is already logged in
+      this.handleCheckStatus();
+    }
   }
 
   // This prevents the bug where the timer is no longer set to the correct value.
@@ -52,7 +53,7 @@ class App extends React.Component {
         this.setState({ login: true });
       })
       .catch((err) => {
-        console.log(err);
+        this.setState({ login: false, err });
       });
   }
 
@@ -71,8 +72,8 @@ class App extends React.Component {
   userLogout = (e) => {
     e.preventDefault();
     axios.get("/api/user/logout", { withCredentials: true }).then((res) => {
-      console.log(res);
       this.setState({ login: false });
+      sessionStorage.removeItem("online");
       console.log("Cleared interval");
       clearInterval(this.interval);
     });

@@ -25,6 +25,7 @@ class Login extends React.Component {
     axios
       .post("/api/user/login", userData, { withCredentials: true })
       .then(() => {
+        window.sessionStorage.setItem("online", true); // used to set a user as logged in
         this.props.userLogin(); // change parent login state to true.
         this.props.history.push("/"); // redirect user back to home page
       })
