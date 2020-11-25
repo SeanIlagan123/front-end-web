@@ -69,17 +69,15 @@ class App extends React.Component {
 
   // Logs the user out by removing cookies and setting.
   // Called in the Nav Component
-  userLogout = (e) => {
-    e.preventDefault();
+  userLogout = () => {
+    this.setState({ login: false });
     axios.get("/api/user/logout", { withCredentials: true }).then((res) => {
-      this.setState({ login: false });
       sessionStorage.removeItem("online");
-      console.log("Cleared interval");
       clearInterval(this.interval);
     });
   };
 
-  userLogin = (e) => {
+  userLogin = () => {
     this.setState({ login: true });
   };
 
